@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 using RoR2;
@@ -9,6 +10,11 @@ namespace SaleStarReminder
     // same answer on clients as on the host.
     internal sealed class ChestScanner
     {
+        private const string CategorySeparator = " - ";
+        private const string ChestWord = "Chest";
+        private const string SmallChestToken = "CHEST1_NAME";
+        private const string SmallChestName = "Small Chest";
+
         private int scannedInstanceCount = -1;
         private int scannedCandidateCount = -1;
         private bool scannedHasKey;
@@ -54,9 +60,21 @@ namespace SaleStarReminder
             return FindBest(InstanceTracker.GetInstancesList<PurchaseInteraction>(), scannedHasKey, exclude);
         }
 
+        // In English, the plain small chest reads as "Small Chest" rather than just "Chest", and category chests
+        // ("Chest - Utility", "Large Chest - Utility") read as "Utility Chest" and "Large Utility Chest". Other languages
+        // keep the game's names, since they don't form them the same way.
         public static string GetDisplayName(PurchaseInteraction chest)
         {
-            return Language.GetString(chest.displayNameToken);
+            string name = Language.GetString(chest.displayNameToken);
+            if (Language.currentLanguageName != "en") return name;
+            if (chest.displayNameToken == SmallChestToken) return SmallChestName;
+
+            int dash = name.IndexOf(CategorySeparator, StringComparison.Ordinal);
+            if (dash < 0) return name;
+            string chestPart = name.Substring(0, dash);
+            if (!chestPart.EndsWith(ChestWord, StringComparison.Ordinal)) return name;
+            string category = name.Substring(dash + CategorySeparator.Length).Trim();
+            return chestPart.Substring(0, chestPart.Length - ChestWord.Length) + category + " " + ChestWord;
         }
 
         // Logs every purchasable object on the stage and how the mod sees it, to check the tier table in game.

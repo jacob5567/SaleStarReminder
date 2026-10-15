@@ -14,7 +14,6 @@ namespace SaleStarReminder
         // The inventory change reaches a client a round trip after the interact press, by which point the interactor
         // has moved off the opened chest. This is how long the last aimed-at chest still counts as the one used.
         private const float UsedChestGrace = 1.5f;
-        private const string MostValuablePrefix = "Most valuable chest: ";
 
         private readonly ChestScanner scanner = new ChestScanner();
         private HUD hud;
@@ -87,9 +86,16 @@ namespace SaleStarReminder
             if (best != describedBest)
             {
                 describedBest = best;
-                bestSubline = best ? MostValuablePrefix + ChestScanner.GetDisplayName(best) : null;
+                bestSubline = best ? DescribeChestOnStage(ChestScanner.GetDisplayName(best)) : null;
             }
             return bestSubline;
+        }
+
+        // "There is a Legendary Chest on this stage", with "an" before a vowel (Adaptive Chest, Equipment Barrel).
+        private static string DescribeChestOnStage(string name)
+        {
+            string article = name.Length > 0 && "AEIOUaeiou".IndexOf(name[0]) >= 0 ? "an" : "a";
+            return $"There is {article} {name} on this stage";
         }
 
         // Remembers the last Sale Star chest the player aimed at, which is the one a spent star went into.
