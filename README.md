@@ -22,7 +22,8 @@ Edit `BepInEx/config/sevenstack.SaleStarReminder.cfg`, or use the in-game settin
 | Setting | Default | Description |
 |---|---|---|
 | `ShowReminder` | true | Show the red reminder. |
-| `ReminderFontSize` | 40 | Size of the reminder text. The line under it is half this size. |
+| `ReminderFontSize` | 80 | Size of the main alert text. |
+| `SubheaderFontSize` | 20 | Size of the smaller line under the main alert. |
 | `ReminderOffsetY` | 8 | Gap below the item box at the top of the screen, in UI pixels. |
 | `ShowMostValuableChest` | false | Name the most valuable unopened Sale Star chest on the stage under the reminder. |
 | `MockSmallChest` | false | Make fun of you after you spend the star on a small chest, Equipment Barrel or Concept Reliquary while a Large Chest or better was still available. |

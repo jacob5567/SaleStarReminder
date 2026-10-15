@@ -11,7 +11,6 @@ namespace SaleStarReminder
     {
         private const float FadeDuration = 0.2f;
         private const float SideMargin = 40f;
-        private const float SubheaderScale = 0.5f;
         private const float OutlineWidth = 0.2f;
         private const string ReminderHeadline = "UNUSED SALE STAR";
 
@@ -25,7 +24,8 @@ namespace SaleStarReminder
         private TextMeshProUGUI headline;
         private TextMeshProUGUI subheader;
         private bool visible;
-        private float shownFontSize = -1f;
+        private float shownHeadlineSize = -1f;
+        private float shownSubheaderSize = -1f;
 
         public static ReminderBanner Create(HUD hud)
         {
@@ -121,12 +121,17 @@ namespace SaleStarReminder
         private void LateUpdate()
         {
             PluginConfig settings = SaleStarReminderPlugin.Settings;
-            float fontSize = settings.ReminderFontSize.Value;
-            if (fontSize != shownFontSize)
+            float headlineSize = settings.ReminderFontSize.Value;
+            if (headlineSize != shownHeadlineSize)
             {
-                shownFontSize = fontSize;
-                headline.fontSize = fontSize;
-                subheader.fontSize = fontSize * SubheaderScale;
+                shownHeadlineSize = headlineSize;
+                headline.fontSize = headlineSize;
+            }
+            float subheaderSize = settings.SubheaderFontSize.Value;
+            if (subheaderSize != shownSubheaderSize)
+            {
+                shownSubheaderSize = subheaderSize;
+                subheader.fontSize = subheaderSize;
             }
             float target = visible ? 1f : 0f;
             if (visible || canvasGroup.alpha > 0f)

@@ -7,6 +7,7 @@ namespace SaleStarReminder
     {
         public readonly ConfigEntry<bool> ShowReminder;
         public readonly ConfigEntry<float> ReminderFontSize;
+        public readonly ConfigEntry<float> SubheaderFontSize;
         public readonly ConfigEntry<float> ReminderOffsetY;
 
         public readonly ConfigEntry<bool> ShowMostValuableChest;
@@ -23,8 +24,10 @@ namespace SaleStarReminder
         {
             ShowReminder = config.Bind("Reminder", "ShowReminder", true,
                 "Show large red text at the top of the screen while you hold an unused Sale Star and the stage has a chest it works on.");
-            ReminderFontSize = config.Bind("Reminder", "ReminderFontSize", 40f,
-                "Font size of the reminder text, in UI points. The line below it is half this size.");
+            ReminderFontSize = config.Bind("Reminder", "ReminderFontSize", 80f,
+                "Font size of the main alert (UNUSED SALE STAR, or the line making fun of you), in UI points.");
+            SubheaderFontSize = config.Bind("Reminder", "SubheaderFontSize", 20f,
+                "Font size of the smaller line under the main alert, in UI points.");
             ReminderOffsetY = config.Bind("Reminder", "ReminderOffsetY", 8f,
                 "Gap between the bottom of the item box at the top of the screen and the reminder text, in UI pixels.");
 
