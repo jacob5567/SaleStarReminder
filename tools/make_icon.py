@@ -120,7 +120,7 @@ def render(layout):
 
 
 def main(argv):
-    layout = "badge"
+    layout = "banner"
     if len(argv) >= 2 and argv[0] == "--layout":
         layout = argv[1]
         argv = argv[2:]
