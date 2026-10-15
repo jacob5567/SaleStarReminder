@@ -148,26 +148,24 @@ namespace SaleStarReminder
             }
 
             ChestTier tier = ChestTiers.Get(used);
+            PurchaseInteraction better = scanner.GetBestExcluding(used);
+            ChestTier betterTier = better ? ChestTiers.Get(better) : ChestTier.Unknown;
             if (settings.DebugLogging.Value)
             {
                 SaleStarReminderPlugin.Log.LogInfo(
-                    $"Sale Star spent on {used.gameObject.name} ({used.displayNameToken}, tier {tier}).");
+                    $"Sale Star spent on {used.gameObject.name} ({used.displayNameToken}, tier {tier}); best other"
+                    + $" chest: {(better ? better.displayNameToken : "none")} (tier {betterTier}).");
             }
-            if (!settings.MockSmallChest.Value || !ChestTiers.IsMockable(tier)) return;
+            // Only worth making fun of when a Large chest or better was there to spend it on instead.
+            if (!settings.MockSmallChest.Value || !ChestTiers.IsMockable(tier) || betterTier < ChestTier.Large) return;
 
             bool includeVulgar = settings.MockIncludeVulgar.Value;
             string line = MockLines.PickSmallChest(includeVulgar);
             if (line == null) return;
 
-            string subline = null;
-            if (settings.ShowMostValuableChest.Value)
-            {
-                PurchaseInteraction better = scanner.GetBestExcluding(used);
-                if (better && ChestTiers.Get(better) > ChestTier.Small)
-                {
-                    subline = MockLines.PickBetterChest(includeVulgar, ChestScanner.GetDisplayName(better));
-                }
-            }
+            string subline = settings.ShowMostValuableChest.Value
+                ? MockLines.PickBetterChest(includeVulgar, ChestScanner.GetDisplayName(better))
+                : null;
 
             mockLine = line;
             mockSubline = subline;

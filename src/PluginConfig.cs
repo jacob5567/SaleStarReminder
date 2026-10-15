@@ -32,7 +32,7 @@ namespace SaleStarReminder
                 "Under the reminder, name the most valuable unopened chest on the stage that the Sale Star works on. This includes chests you haven't found yet.");
 
             MockSmallChest = config.Bind("Mock", "MockSmallChest", false,
-                "Make fun of you for a few seconds after you spend a Sale Star on a small chest, an Equipment Barrel or a Concept Reliquary. With ShowMostValuableChest on, also names the better chest you could have used it on.");
+                "Make fun of you for a few seconds after you spend a Sale Star on a small chest, an Equipment Barrel or a Concept Reliquary while a Large Chest, Rusty Lockbox or Legendary Chest was still available. With ShowMostValuableChest on, also names that chest.");
             MockIncludeVulgar = config.Bind("Mock", "MockIncludeVulgar", true,
                 "Also pick from the vulgar lines when making fun of you.");
             MockDurationSeconds = config.Bind("Mock", "MockDurationSeconds", 6f,

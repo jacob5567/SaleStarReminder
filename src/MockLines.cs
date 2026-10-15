@@ -3,7 +3,7 @@ using UnityEngine;
 namespace SaleStarReminder
 {
     // Lines that make fun of the player for spending a Sale Star on a small chest, an Equipment Barrel or a Concept
-    // Reliquary. One is picked at random each time. Fill these in.
+    // Reliquary while a Large Chest or better was still on the stage. One is picked at random each time. Fill these in.
     internal static class MockLines
     {
         // The headline.
@@ -19,8 +19,8 @@ namespace SaleStarReminder
             "TODO: vulgar small-chest line 2",
         };
 
-        // The line under it, shown only with ShowMostValuableChest on and a better chest still on the stage.
-        // {0} is replaced with that chest's name, e.g. "Legendary Chest".
+        // The line under it, shown only with ShowMostValuableChest on. {0} is replaced with the name of the best chest
+        // that was still on the stage, e.g. "Legendary Chest".
         public static readonly string[] BetterChest =
         {
             "TODO: you could have used it on the {0}",

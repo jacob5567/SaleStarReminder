@@ -11,7 +11,7 @@ While you hold an unused Sale Star and the stage still has an unopened chest it 
   3. Adaptive Chest
   4. Chest, Cloaked Chest, Damage/Healing/Utility Chest
   5. Equipment Barrel, Concept Reliquary
-- **Making fun of you** (optional, off by default): spend the star on a small chest, an Equipment Barrel or a Concept Reliquary, and the reminder's spot makes fun of you for a few seconds. With the most-valuable-chest option on, it also names the better chest you could have used it on.
+- **Making fun of you** (optional, off by default): spend the star on a small chest, an Equipment Barrel or a Concept Reliquary while a Large Chest, Rusty Lockbox or Legendary Chest is still unopened on the stage, and the reminder's spot makes fun of you for a few seconds. With the most-valuable-chest option on, it also names that better chest.
 
 The mod never changes gameplay and never sends anything over the network. It works when you join a host who doesn't have it installed.
 
@@ -25,7 +25,7 @@ Edit `BepInEx/config/sevenstack.SaleStarReminder.cfg`, or use the in-game settin
 | `ReminderFontSize` | 40 | Size of the reminder text. The line under it is half this size. |
 | `ReminderOffsetY` | 8 | Gap below the item box at the top of the screen, in UI pixels. |
 | `ShowMostValuableChest` | false | Name the most valuable unopened Sale Star chest on the stage under the reminder. |
-| `MockSmallChest` | false | Make fun of you after you spend the star on a small chest, Equipment Barrel or Concept Reliquary. |
+| `MockSmallChest` | false | Make fun of you after you spend the star on a small chest, Equipment Barrel or Concept Reliquary while a Large Chest or better was still available. |
 | `MockIncludeVulgar` | true | Also pick from the vulgar lines when making fun of you. |
 | `MockDurationSeconds` | 6 | How long the mocking message stays on screen. |
 | `DebugLogging` / `DumpChestsKey` | false / F8 | Log each Sale Star use the mod sees, and dump every purchasable object on the stage, for troubleshooting. |
