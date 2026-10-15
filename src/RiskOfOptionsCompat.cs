@@ -34,6 +34,9 @@ namespace SaleStarReminder
                 new StepSliderConfig { min = 10f, max = 80f, increment = 1f, FormatString = "{0:0}" }));
             ModSettingsManager.AddOption(new StepSliderOption(settings.ReminderOffsetY,
                 new StepSliderConfig { min = -50f, max = 300f, increment = 1f, FormatString = "{0:0}px" }));
+            ModSettingsManager.AddOption(new StepSliderOption(settings.NearChestScale,
+                new StepSliderConfig { min = 1f, max = 2f, increment = 0.05f, FormatString = "{0:0.00}x" }));
+            ModSettingsManager.AddOption(new CheckBoxOption(settings.PulseNearChest));
 
             ModSettingsManager.AddOption(new CheckBoxOption(settings.ShowMostValuableChest));
 

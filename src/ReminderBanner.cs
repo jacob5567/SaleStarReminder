@@ -12,6 +12,11 @@ namespace SaleStarReminder
         private const float FadeDuration = 0.2f;
         private const float SideMargin = 40f;
         private const float OutlineWidth = 0.2f;
+        private const float EmphasisFadeDuration = 0.15f;
+        // Photosensitivity: a smooth opacity pulse at 2 Hz, under the 3 flashes per second that WCAG 2.3.1 treats as
+        // the limit, and never a hard on/off flash. The alert also never fades out completely.
+        private const float PulseFrequency = 2f;
+        private const float PulseMinAlpha = 0.35f;
         private const string ReminderHeadline = "UNUSED SALE STAR";
 
         private static readonly Color HeadlineColor = new Color(1f, 0.17f, 0.17f);
@@ -24,6 +29,9 @@ namespace SaleStarReminder
         private TextMeshProUGUI headline;
         private TextMeshProUGUI subheader;
         private bool visible;
+        private bool emphasized;
+        private float emphasis;
+        private float pulseTime;
         private float shownHeadlineSize = -1f;
         private float shownSubheaderSize = -1f;
 
@@ -85,19 +93,23 @@ namespace SaleStarReminder
             return text;
         }
 
-        public void ShowReminder(string subline)
+        // nearChest: the game is circling a chest the star works on, so the alert grows and pulses.
+        public void ShowReminder(string subline, bool nearChest)
         {
             Show(ReminderHeadline, subline);
+            emphasized = nearChest;
         }
 
         public void ShowMock(string line, string subline)
         {
             Show(line, subline);
+            emphasized = false;
         }
 
         public void Hide()
         {
             visible = false;
+            emphasized = false;
         }
 
         private void Show(string line, string subline)
@@ -121,12 +133,15 @@ namespace SaleStarReminder
         private void LateUpdate()
         {
             PluginConfig settings = SaleStarReminderPlugin.Settings;
-            float headlineSize = settings.ReminderFontSize.Value;
+            emphasis = Mathf.MoveTowards(emphasis, emphasized ? 1f : 0f, Time.unscaledDeltaTime / EmphasisFadeDuration);
+
+            float headlineSize = settings.ReminderFontSize.Value * Mathf.Lerp(1f, settings.NearChestScale.Value, emphasis);
             if (headlineSize != shownHeadlineSize)
             {
                 shownHeadlineSize = headlineSize;
                 headline.fontSize = headlineSize;
             }
+            UpdatePulse(settings.PulseNearChest.Value);
             float subheaderSize = settings.SubheaderFontSize.Value;
             if (subheaderSize != shownSubheaderSize)
             {
@@ -139,6 +154,26 @@ namespace SaleStarReminder
                 rectTransform.anchoredPosition = new Vector2(0f, GetItemDisplayBottom() - settings.ReminderOffsetY.Value);
             }
             canvasGroup.alpha = Mathf.MoveTowards(canvasGroup.alpha, target, Time.unscaledDeltaTime / FadeDuration);
+        }
+
+        // Starts at full opacity each time the player comes near a chest, so the alert never pops in half faded.
+        private void UpdatePulse(bool enabled)
+        {
+            float alpha = 1f;
+            if (enabled && emphasis > 0f)
+            {
+                pulseTime += Time.unscaledDeltaTime;
+                float wave = 0.5f - 0.5f * Mathf.Cos(2f * Mathf.PI * PulseFrequency * pulseTime);
+                alpha = Mathf.Lerp(1f, PulseMinAlpha, wave * emphasis);
+            }
+            else
+            {
+                pulseTime = 0f;
+            }
+            if (headline.alpha != alpha)
+            {
+                headline.alpha = alpha;
+            }
         }
 
         // Bottom edge of the box along the top of the screen that the item icons shrink to fit into (the display's own

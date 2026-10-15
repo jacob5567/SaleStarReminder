@@ -73,12 +73,20 @@ namespace SaleStarReminder
                 && ((holdsStar && scanner.AnyUsable) || settings.DebugAlwaysShow.Value);
             if (show)
             {
-                banner.ShowReminder(settings.ShowMostValuableChest.Value ? DescribeBest(scanner.Best) : null);
+                banner.ShowReminder(settings.ShowMostValuableChest.Value ? DescribeBest(scanner.Best) : null,
+                    holdsStar && IsGameCirclingChest());
             }
             else
             {
                 banner.Hide();
             }
+        }
+
+        // The game spawns its Sale Star glow around the aimed-at chest when the player holds a star and can afford it.
+        // Reading that effect matches the game's own circle exactly, instead of re-deriving its conditions.
+        private bool IsGameCirclingChest()
+        {
+            return driver && driver.saleStarEffect;
         }
 
         private string DescribeBest(PurchaseInteraction best)
