@@ -136,28 +136,15 @@ namespace SaleStarReminder
             canvasGroup.alpha = Mathf.MoveTowards(canvasGroup.alpha, target, Time.unscaledDeltaTime / FadeDuration);
         }
 
-        // Bottom of the item icons along the top of the screen, relative to the top edge of the banner's parent. The
-        // display fills rows from the top and shrinks icons to fit more rows, so the last icon is always in the lowest
-        // row. The banner never goes higher than one full-size row, so it doesn't jump around early in a run.
+        // Bottom edge of the box along the top of the screen that the item icons shrink to fit into (the display's own
+        // rect, drawn with a translucent background), relative to the top edge of the banner's parent. The box has a
+        // fixed height, so the banner stays put however many items there are.
         private float GetItemDisplayBottom()
         {
             if (!itemDisplay || !(rectTransform.parent is RectTransform parent)) return 0f;
 
-            RectTransform displayRect = (RectTransform)itemDisplay.transform;
-            float oneRowY = displayRect.rect.yMax - itemDisplay.verticalMargin - itemDisplay.itemIconPrefabWidth;
-            float bottom = parent.InverseTransformPoint(displayRect.TransformPoint(new Vector3(0f, oneRowY, 0f))).y;
-
-            var icons = itemDisplay.itemIcons;
-            if (icons != null && icons.Count > 0)
-            {
-                ItemIcon last = icons[icons.Count - 1];
-                if (last && last.rectTransform)
-                {
-                    last.rectTransform.GetWorldCorners(corners);
-                    bottom = Mathf.Min(bottom, parent.InverseTransformPoint(corners[0]).y);
-                }
-            }
-            return bottom - parent.rect.yMax;
+            ((RectTransform)itemDisplay.transform).GetWorldCorners(corners);
+            return parent.InverseTransformPoint(corners[0]).y - parent.rect.yMax;
         }
     }
 }
