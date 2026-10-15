@@ -31,7 +31,7 @@ namespace SaleStarReminder
             ModSettingsManager.AddOption(new StepSliderOption(settings.ReminderFontSize,
                 new StepSliderConfig { min = 20f, max = 80f, increment = 1f, FormatString = "{0:0}" }));
             ModSettingsManager.AddOption(new StepSliderOption(settings.ReminderOffsetY,
-                new StepSliderConfig { min = 0f, max = 500f, increment = 5f, FormatString = "{0:0}px" }));
+                new StepSliderConfig { min = -50f, max = 300f, increment = 1f, FormatString = "{0:0}px" }));
 
             ModSettingsManager.AddOption(new CheckBoxOption(settings.ShowMostValuableChest));
 

@@ -19,6 +19,8 @@ namespace SaleStarReminder
         private static readonly Color SubheaderColor = new Color(1f, 0.92f, 0.92f);
 
         private RectTransform rectTransform;
+        private ItemInventoryDisplay itemDisplay;
+        private readonly Vector3[] corners = new Vector3[4];
         private CanvasGroup canvasGroup;
         private TextMeshProUGUI headline;
         private TextMeshProUGUI subheader;
@@ -57,6 +59,7 @@ namespace SaleStarReminder
 
             ReminderBanner banner = root.AddComponent<ReminderBanner>();
             banner.rectTransform = rect;
+            banner.itemDisplay = hud.itemInventoryDisplay;
             banner.canvasGroup = group;
             banner.headline = CreateText(rect, "Headline", HeadlineColor, FontStyles.Bold);
             banner.subheader = CreateText(rect, "Subheader", SubheaderColor, FontStyles.Normal);
@@ -125,10 +128,36 @@ namespace SaleStarReminder
                 headline.fontSize = fontSize;
                 subheader.fontSize = fontSize * SubheaderScale;
             }
-            rectTransform.anchoredPosition = new Vector2(0f, -settings.ReminderOffsetY.Value);
-
             float target = visible ? 1f : 0f;
+            if (visible || canvasGroup.alpha > 0f)
+            {
+                rectTransform.anchoredPosition = new Vector2(0f, GetItemDisplayBottom() - settings.ReminderOffsetY.Value);
+            }
             canvasGroup.alpha = Mathf.MoveTowards(canvasGroup.alpha, target, Time.unscaledDeltaTime / FadeDuration);
+        }
+
+        // Bottom of the item icons along the top of the screen, relative to the top edge of the banner's parent. The
+        // display fills rows from the top and shrinks icons to fit more rows, so the last icon is always in the lowest
+        // row. The banner never goes higher than one full-size row, so it doesn't jump around early in a run.
+        private float GetItemDisplayBottom()
+        {
+            if (!itemDisplay || !(rectTransform.parent is RectTransform parent)) return 0f;
+
+            RectTransform displayRect = (RectTransform)itemDisplay.transform;
+            float oneRowY = displayRect.rect.yMax - itemDisplay.verticalMargin - itemDisplay.itemIconPrefabWidth;
+            float bottom = parent.InverseTransformPoint(displayRect.TransformPoint(new Vector3(0f, oneRowY, 0f))).y;
+
+            var icons = itemDisplay.itemIcons;
+            if (icons != null && icons.Count > 0)
+            {
+                ItemIcon last = icons[icons.Count - 1];
+                if (last && last.rectTransform)
+                {
+                    last.rectTransform.GetWorldCorners(corners);
+                    bottom = Mathf.Min(bottom, parent.InverseTransformPoint(corners[0]).y);
+                }
+            }
+            return bottom - parent.rect.yMax;
         }
     }
 }

@@ -25,8 +25,8 @@ namespace SaleStarReminder
                 "Show large red text at the top of the screen while you hold an unused Sale Star and the stage has a chest it works on.");
             ReminderFontSize = config.Bind("Reminder", "ReminderFontSize", 40f,
                 "Font size of the reminder text, in UI points. The line below it is half this size.");
-            ReminderOffsetY = config.Bind("Reminder", "ReminderOffsetY", 120f,
-                "Distance from the top of the screen to the reminder text, in UI pixels.");
+            ReminderOffsetY = config.Bind("Reminder", "ReminderOffsetY", 8f,
+                "Gap between the bottom of your item icons at the top of the screen and the reminder text, in UI pixels.");
 
             ShowMostValuableChest = config.Bind("MostValuableChest", "ShowMostValuableChest", false,
                 "Under the reminder, name the most valuable unopened chest on the stage that the Sale Star works on. This includes chests you haven't found yet.");

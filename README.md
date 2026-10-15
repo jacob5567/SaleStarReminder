@@ -4,7 +4,7 @@ A client-side Risk of Rain 2 mod for the Seekers of the Storm DLC. It reminds yo
 
 While you hold an unused Sale Star and the stage still has an unopened chest it works on:
 
-- **UNUSED SALE STAR** appears in red at the top of the screen. It goes away once you spend the star, or once no chest the star works on is left on the stage, for example in the Bazaar.
+- **UNUSED SALE STAR** appears in red at the top of the screen, just below your items. It goes away once you spend the star, or once no chest the star works on is left on the stage, for example in the Bazaar.
 - **Most valuable chest** (optional, off by default): a line under the reminder names the best unopened chest on the stage to spend the star on. From best to worst:
   1. Legendary Chest
   2. Large Chest, Large Damage/Healing/Utility Chest, Rusty Lockbox (only while you hold a Rusted Key)
@@ -23,7 +23,7 @@ Edit `BepInEx/config/sevenstack.SaleStarReminder.cfg`, or use the in-game settin
 |---|---|---|
 | `ShowReminder` | true | Show the red reminder. |
 | `ReminderFontSize` | 40 | Size of the reminder text. The line under it is half this size. |
-| `ReminderOffsetY` | 120 | Distance from the top of the screen, in UI pixels. |
+| `ReminderOffsetY` | 8 | Gap below your item icons at the top of the screen, in UI pixels. |
 | `ShowMostValuableChest` | false | Name the most valuable unopened Sale Star chest on the stage under the reminder. |
 | `MockSmallChest` | false | Make fun of you after you spend the star on a small chest, Equipment Barrel or Concept Reliquary. |
 | `MockIncludeVulgar` | true | Also pick from the vulgar lines when making fun of you. |
