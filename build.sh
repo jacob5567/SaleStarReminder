@@ -11,7 +11,7 @@ stage=dist/package
 rm -rf "$stage"
 mkdir -p "$stage/plugins/SaleStarReminder"
 cp thunderstore/manifest.json thunderstore/icon.png README.md CHANGELOG.md "$stage/"
-cp bin/Release/netstandard2.1/SaleStarReminder.dll "$stage/plugins/SaleStarReminder/"
+cp bin/Release/netstandard2.1/SaleStarReminder.dll bin/Release/netstandard2.1/MockLines.json "$stage/plugins/SaleStarReminder/"
 
 zip_path="dist/SaleStarReminder-$version.zip"
 rm -f "$zip_path"

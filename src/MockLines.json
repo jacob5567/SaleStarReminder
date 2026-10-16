@@ -1,0 +1,36 @@
+{
+  "smallChest": {
+    "clean": [
+      "Did you even look for a better option?",
+      "Maybe use it on a valuable chest next time?",
+      "why did you use it there",
+      "You dingus, why did you do that",
+      "Someone forgot about their Sale Star",
+      "I'm disappointed in you",
+      "Congratulations on your one (1) extra white item",
+      "Big spender over here",
+      "Peak decision-making"
+    ],
+    "vulgar": [
+      "You've really fucked this",
+      "You fuckwit",
+      "DUMBASS",
+      "You idiot",
+      "Why the fuck would you use it there",
+      "You dipshit"
+    ]
+  },
+  "betterChest": {
+    "clean": [
+      "You could have used it on the {0}",
+      "Maybe the {0} would have been a better choice",
+      "I would have chosen the {0} instead",
+      "There was a {0} available",
+      "Somewhere on this stage, the {0} weeps"
+    ],
+    "vulgar": [
+      "There was a {0}, dumbass",
+      "The {0} was right fucking there"
+    ]
+  }
+}

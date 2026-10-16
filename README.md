@@ -12,6 +12,7 @@ While you hold an unused Sale Star and the stage still has an unopened chest it 
   3. Adaptive Chest
   4. Small Chest, Cloaked Chest, Damage/Healing/Utility Chest
   5. Equipment Barrel, Concept Reliquary
+- **Making fun of you** (optional, off by default): spend the star on a small chest, an Equipment Barrel or a Concept Reliquary while a Large Chest, Rusty Lockbox or Legendary Chest is still unopened on the stage, and the reminder's spot makes fun of you for a few seconds. With the most-valuable-chest option on, it also names that better chest. The lines come from `MockLines.json` (see below).
 
 The mod never changes gameplay and never sends anything over the network. It works when you join a host who doesn't have it installed.
 
@@ -28,8 +29,24 @@ Edit `BepInEx/config/sevenstack.SaleStarReminder.cfg`, or use the in-game settin
 | `NearChestScale` | 1.3 | How much bigger the alert gets while the game circles a Sale Star chest that's worse than a Large-or-better chest still on the stage. 1 turns this off. |
 | `PulseNearChest` | true | Fade the alert in and out, twice per second, at the same times it grows. |
 | `ShowMostValuableChest` | false | Name the most valuable unopened Sale Star chest on the stage under the reminder. |
+| `MockSmallChest` | false | Make fun of you after you spend the star on a small chest, Equipment Barrel or Concept Reliquary while a Large Chest or better was still available. |
+| `MockIncludeVulgar` | false | Also pick from the vulgar lines when making fun of you. |
+| `MockDurationSeconds` | 6 | How long the mocking message stays on screen. |
 | `DebugLogging` / `DumpChestsKey` | false / F8 | Log each Sale Star use the mod sees, and dump every purchasable object on the stage, for troubleshooting. |
 | `DebugAlwaysShow` | false | Show the reminder even without a Sale Star, for testing. |
+
+### Mocking lines
+
+The lines are in `MockLines.json`, next to `SaleStarReminder.dll` in the mod's plugin folder. Edit it with any text editor and restart the game to use your own. `smallChest` is the big line; `betterChest` is the smaller line under it, where `{0}` becomes the better chest's name. Each has a `clean` and a `vulgar` list. One line is picked at random from `clean`, or from both lists with `MockIncludeVulgar` on.
+
+```json
+{
+  "smallChest": { "clean": ["..."], "vulgar": ["..."] },
+  "betterChest": { "clean": ["You could have used it on the {0}"], "vulgar": ["..."] }
+}
+```
+
+If the file is missing or isn't valid JSON, the mod logs a warning and doesn't make fun of you. Updating the mod replaces the file, so keep a copy of your own lines.
 
 ## Notes
 
@@ -52,6 +69,6 @@ Paths default to the Steam and r2modman locations on Linux. Override `RoR2Dir` a
 
 `tools/make_icon.py` draws `thunderstore/icon.png`.
 
-A feature that makes fun of you for spending the star on a small chest is built but hidden until its lines are written. To work on it, fill in `src/MockLines.cs` and set `PluginConfig.MockingAvailable` to true.
+The mocking lines live in `src/MockLines.json`. The build copies it next to the DLL, both in the r2modman profile and in the package.
 
 The version lives in `thunderstore/manifest.json`. To release, bump it, run `./build.sh`, and publish a GitHub release tagged `v<version>` with the zip attached. The publish workflow then uploads that zip to Thunderstore.

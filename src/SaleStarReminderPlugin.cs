@@ -20,6 +20,7 @@ namespace SaleStarReminder
         {
             Log = Logger;
             Settings = new PluginConfig(Config);
+            MockLines.Load(System.IO.Path.GetDirectoryName(Info.Location));
 
             if (RiskOfOptionsCompat.Enabled)
             {

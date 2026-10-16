@@ -33,6 +33,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- The mocking lines, shipped next to the DLL so they can be edited without rebuilding. -->
+    <None Update="src/MockLines.json" Link="MockLines.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
     <!-- The mod icon in the Risk Of Options menu. Embedded so it works however the mod was installed. -->
     <EmbeddedResource Include="thunderstore/icon.png" LogicalName="SaleStarReminder.icon.png" />
   </ItemGroup>
@@ -52,7 +57,7 @@
 
   <!-- Drop the built plugin straight into the r2modman profile for quick testing. -->
   <Target Name="CopyToProfile" AfterTargets="Build" Condition="'$(CopyToProfile)' == 'true' And Exists('$(ProfileDir)/BepInEx/plugins')">
-    <Copy SourceFiles="$(TargetPath);$(TargetDir)$(TargetName).pdb" DestinationFolder="$(ProfileDir)/BepInEx/plugins/SaleStarReminder" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$(TargetPath);$(TargetDir)$(TargetName).pdb;$(TargetDir)MockLines.json" DestinationFolder="$(ProfileDir)/BepInEx/plugins/SaleStarReminder" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copied $(TargetFileName) to $(ProfileDir)/BepInEx/plugins/SaleStarReminder" />
   </Target>
 
