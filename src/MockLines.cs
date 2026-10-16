@@ -84,7 +84,8 @@ namespace SaleStarReminder
 
         private static string[] Clean(string[] lines)
         {
-            return lines == null ? Array.Empty<string>() : lines.Where(line => !string.IsNullOrWhiteSpace(line)).ToArray();
+            if (lines == null) return Array.Empty<string>();
+            return lines.Where(line => !string.IsNullOrWhiteSpace(line)).ToArray();
         }
 
         // The JSON layout, for JsonUtility. Field names must match the file's keys exactly. JsonUtility fills the fields

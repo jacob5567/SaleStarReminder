@@ -12,7 +12,8 @@ namespace SaleStarReminder
     internal sealed class SaleStarReminderController : MonoBehaviour
     {
         // The inventory change reaches a client a round trip after the interact press, by which point the interactor
-        // has moved off the opened chest. This is how long the last aimed-at chest still counts as the one used.
+        // has moved off the opened chest. This is how long the last aimed-at chest still counts as the one used, and how
+        // long a suspected chest has to show up as opened before it's cleared.
         private const float UsedChestGrace = 1.5f;
 
         private readonly ChestScanner scanner = new ChestScanner();
@@ -29,6 +30,8 @@ namespace SaleStarReminder
         private Inventory trackedInventory;
         private int lastStars;
         private int lastConsumed;
+        private PurchaseInteraction suspectedChest;
+        private float suspectedSince;
 
         private float mockUntil = float.NegativeInfinity;
         private string mockLine;
@@ -60,6 +63,7 @@ namespace SaleStarReminder
             scanner.Refresh(inventory, body);
             TrackAimedChest(body);
             DetectStarUse(inventory, settings);
+            ConfirmSuspectedChest(settings);
 
             if (Time.time < mockUntil)
             {
@@ -105,7 +109,8 @@ namespace SaleStarReminder
             if (best != describedBest)
             {
                 describedBest = best;
-                bestSubline = best ? DescribeChestOnStage(ChestScanner.GetDisplayName(best)) : null;
+                string name = best ? ChestScanner.GetDisplayName(best) : null;
+                bestSubline = name != null ? DescribeChestOnStage(name) : null;
             }
             return bestSubline;
         }
@@ -151,26 +156,43 @@ namespace SaleStarReminder
             lastStars = stars;
             lastConsumed = consumed;
 
-            if (used)
+            if (!used) return;
+            if (lastAimedChest && Time.time - lastAimedTime <= UsedChestGrace)
             {
-                OnStarUsed(settings);
+                suspectedChest = lastAimedChest;
+                suspectedSince = Time.time;
+            }
+            else if (settings.DebugLogging.Value)
+            {
+                SaleStarReminderPlugin.Log.LogInfo("Sale Star spent, but no recently aimed-at chest to blame.");
             }
         }
 
-        private void OnStarUsed(PluginConfig settings)
+        // The aimed-at chest only counts as the one the star went into once it has actually been opened. Something
+        // else can spend the star, such as the Captain's Hacking Beacon opening a different chest with the player's
+        // interactor, and the chest the player happened to look at stays available then.
+        private void ConfirmSuspectedChest(PluginConfig settings)
         {
-            PurchaseInteraction used = lastAimedChest && Time.time - lastAimedTime <= UsedChestGrace
-                ? lastAimedChest
-                : null;
-            if (!used)
+            if (!suspectedChest) return;
+            if (!suspectedChest.available)
+            {
+                PurchaseInteraction used = suspectedChest;
+                suspectedChest = null;
+                OnStarUsed(used, settings);
+            }
+            else if (Time.time - suspectedSince > UsedChestGrace)
             {
                 if (settings.DebugLogging.Value)
                 {
-                    SaleStarReminderPlugin.Log.LogInfo("Sale Star spent, but no recently aimed-at chest to blame.");
+                    SaleStarReminderPlugin.Log.LogInfo(
+                        $"Sale Star spent, but {suspectedChest.gameObject.name} wasn't opened, so it isn't blamed.");
                 }
-                return;
+                suspectedChest = null;
             }
+        }
 
+        private void OnStarUsed(PurchaseInteraction used, PluginConfig settings)
+        {
             ChestTier tier = ChestTiers.Get(used);
             PurchaseInteraction better = scanner.GetBestExcluding(used);
             ChestTier betterTier = better ? ChestTiers.Get(better) : ChestTier.Unknown;

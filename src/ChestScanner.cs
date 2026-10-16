@@ -67,8 +67,10 @@ namespace SaleStarReminder
         // In English, the plain small chest reads as "Small Chest" rather than just "Chest", and category chests
         // ("Chest - Utility", "Large Chest - Utility") read as "Utility Chest" and "Large Utility Chest". Other languages
         // keep the game's names, since they don't form them the same way.
+        // Null for a chest with no name token (only possible from other mods), since the lookup throws on null.
         public static string GetDisplayName(PurchaseInteraction chest)
         {
+            if (string.IsNullOrEmpty(chest.displayNameToken)) return null;
             string name = Language.GetString(chest.displayNameToken);
             if (Language.currentLanguageName != "en") return name;
             if (chest.displayNameToken == SmallChestToken) return SmallChestName;
