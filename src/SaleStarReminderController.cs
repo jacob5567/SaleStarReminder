@@ -181,7 +181,11 @@ namespace SaleStarReminder
                     + $" chest: {(better ? better.displayNameToken : "none")} (tier {betterTier}).");
             }
             // Only worth making fun of when a Large chest or better was there to spend it on instead.
-            if (!settings.MockSmallChest.Value || !ChestTiers.IsMockable(tier) || betterTier < ChestTier.Large) return;
+            if (!PluginConfig.MockingAvailable || !settings.MockSmallChest.Value || !ChestTiers.IsMockable(tier)
+                || betterTier < ChestTier.Large)
+            {
+                return;
+            }
 
             bool includeVulgar = settings.MockIncludeVulgar.Value;
             string line = MockLines.PickSmallChest(includeVulgar);

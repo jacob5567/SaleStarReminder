@@ -40,10 +40,13 @@ namespace SaleStarReminder
 
             ModSettingsManager.AddOption(new CheckBoxOption(settings.ShowMostValuableChest));
 
-            ModSettingsManager.AddOption(new CheckBoxOption(settings.MockSmallChest));
-            ModSettingsManager.AddOption(new CheckBoxOption(settings.MockIncludeVulgar));
-            ModSettingsManager.AddOption(new StepSliderOption(settings.MockDurationSeconds,
-                new StepSliderConfig { min = 1f, max = 15f, increment = 0.5f, FormatString = "{0:0.0}s" }));
+            if (PluginConfig.MockingAvailable)
+            {
+                ModSettingsManager.AddOption(new CheckBoxOption(settings.MockSmallChest));
+                ModSettingsManager.AddOption(new CheckBoxOption(settings.MockIncludeVulgar));
+                ModSettingsManager.AddOption(new StepSliderOption(settings.MockDurationSeconds,
+                    new StepSliderConfig { min = 1f, max = 15f, increment = 0.5f, FormatString = "{0:0.0}s" }));
+            }
 
             ModSettingsManager.AddOption(new CheckBoxOption(settings.DebugLogging));
             ModSettingsManager.AddOption(new CheckBoxOption(settings.DebugAlwaysShow));

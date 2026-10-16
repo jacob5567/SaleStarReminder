@@ -12,7 +12,6 @@ While you hold an unused Sale Star and the stage still has an unopened chest it 
   3. Adaptive Chest
   4. Small Chest, Cloaked Chest, Damage/Healing/Utility Chest
   5. Equipment Barrel, Concept Reliquary
-- **Making fun of you** (optional, off by default): spend the star on a small chest, an Equipment Barrel or a Concept Reliquary while a Large Chest, Rusty Lockbox or Legendary Chest is still unopened on the stage, and the reminder's spot makes fun of you for a few seconds. With the most-valuable-chest option on, it also names that better chest.
 
 The mod never changes gameplay and never sends anything over the network. It works when you join a host who doesn't have it installed.
 
@@ -29,9 +28,6 @@ Edit `BepInEx/config/sevenstack.SaleStarReminder.cfg`, or use the in-game settin
 | `NearChestScale` | 1.3 | How much bigger the alert gets while the game circles a Sale Star chest that's worse than a Large-or-better chest still on the stage. 1 turns this off. |
 | `PulseNearChest` | true | Fade the alert in and out, twice per second, at the same times it grows. |
 | `ShowMostValuableChest` | false | Name the most valuable unopened Sale Star chest on the stage under the reminder. |
-| `MockSmallChest` | false | Make fun of you after you spend the star on a small chest, Equipment Barrel or Concept Reliquary while a Large Chest or better was still available. |
-| `MockIncludeVulgar` | true | Also pick from the vulgar lines when making fun of you. |
-| `MockDurationSeconds` | 6 | How long the mocking message stays on screen. |
 | `DebugLogging` / `DumpChestsKey` | false / F8 | Log each Sale Star use the mod sees, and dump every purchasable object on the stage, for troubleshooting. |
 | `DebugAlwaysShow` | false | Show the reminder even without a Sale Star, for testing. |
 
@@ -40,7 +36,7 @@ Edit `BepInEx/config/sevenstack.SaleStarReminder.cfg`, or use the in-game settin
 - The Sale Star comes back at the start of every stage, so the reminder comes back too until you spend it.
 - The most-valuable-chest line counts chests you haven't found yet, which is why it's off by default.
 - The Rusty Lockbox only counts while you hold a Rusted Key yourself, even if a teammate's key made it spawn.
-- Chests from other mods still count as places to spend the star, but they're never named as the most valuable.
+- Chests from other mods still count as places to spend the star, but they rank below every chest listed above.
 
 ## Building
 
@@ -53,6 +49,8 @@ dotnet build -c Release   # also copies the DLL into the r2modman Default profil
 
 Paths default to the Steam and r2modman locations on Linux. Override `RoR2Dir` and `ProfileDir` in a `Directory.Build.props.user` file (see `Directory.Build.props`).
 
-The mocking lines are in `src/MockLines.cs`. `tools/make_icon.py` draws `thunderstore/icon.png`.
+`tools/make_icon.py` draws `thunderstore/icon.png`.
+
+A feature that makes fun of you for spending the star on a small chest is built but hidden until its lines are written. To work on it, fill in `src/MockLines.cs` and set `PluginConfig.MockingAvailable` to true.
 
 The version lives in `thunderstore/manifest.json`. To release, bump it, run `./build.sh`, and publish a GitHub release tagged `v<version>` with the zip attached. The publish workflow then uploads that zip to Thunderstore.
