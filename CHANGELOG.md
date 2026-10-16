@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.1
+- Fixed being mocked for a chest you only looked at. A star spent some other way, such as by the Captain's Hacking Beacon opening a different chest, no longer counts against the chest you last aimed at.
+- Fixed an error when a chest added by another mod has no name.
+- The settings now say that `ShowReminder` can be turned off to get only the mocking message.
+
 ## 1.0.0
 - New optional message that makes fun of you for spending the star on a small chest, an Equipment Barrel or a Concept Reliquary while a Large Chest, Rusty Lockbox or Legendary Chest was still on the stage. With the most-valuable-chest line on, it also names the chest you could have used. Off by default.
 - The mocking lines come from `MockLines.json` next to the mod's DLL, so you can write your own. Vulgar lines are a separate option, also off by default.
