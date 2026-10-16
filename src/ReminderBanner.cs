@@ -68,13 +68,13 @@ namespace SaleStarReminder
             banner.rectTransform = rect;
             banner.itemDisplay = hud.itemInventoryDisplay;
             banner.canvasGroup = group;
-            banner.headline = CreateText(rect, "Headline", HeadlineColor, FontStyles.Bold);
-            banner.subheader = CreateText(rect, "Subheader", SubheaderColor, FontStyles.Normal);
+            banner.headline = CreateText(rect, "Headline", HeadlineColor);
+            banner.subheader = CreateText(rect, "Subheader", SubheaderColor);
             banner.subheader.gameObject.SetActive(false);
             return banner;
         }
 
-        private static TextMeshProUGUI CreateText(RectTransform parent, string name, Color color, FontStyles style)
+        private static TextMeshProUGUI CreateText(RectTransform parent, string name, Color color)
         {
             GameObject textObject = new GameObject(name, typeof(RectTransform));
             textObject.layer = parent.gameObject.layer;
@@ -84,11 +84,10 @@ namespace SaleStarReminder
             text.enableWordWrapping = true;
             text.alignment = TextAlignmentOptions.Top;
             text.color = color;
-            text.fontStyle = style;
             text.raycastTarget = false;
-            // No outline: the game font's material already has a drop shadow for contrast, and an outline on top of
-            // that and bold pushes each glyph past the atlas padding, so a sliver of the neighboring glyph shows as a
-            // thin line above the text.
+            // No outline or bold: the game font's material already draws a drop shadow, and either one on top of it
+            // pushes each glyph past the font atlas's padding, so a sliver of the glyph above it in the atlas shows as
+            // a thin line over the text. The font is heavy enough without bold.
             return text;
         }
 
