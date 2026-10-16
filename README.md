@@ -5,7 +5,7 @@ A client-side Risk of Rain 2 mod for the Seekers of the Storm DLC. It reminds yo
 While you hold an unused Sale Star and the stage still has an unopened chest it works on:
 
 - **UNUSED SALE STAR** appears in red at the top of the screen, just below the box your items are shown in. It goes away once you spend the star, or once no chest the star works on is left on the stage, for example in the Bazaar.
-- **Near a chest:** when the game draws its Sale Star circle around a chest you're looking at, the alert grows and fades in and out (twice per second, never a hard flash). Both can be turned off.
+- **About to waste it:** when the game draws its Sale Star circle around a chest you're looking at, and a better chest that's Large or higher is still unopened on the stage, the alert grows and fades in and out (twice per second, never a hard flash). Both can be turned off.
 - **Most valuable chest** (optional, off by default): a line under the reminder names the best unopened chest on the stage to spend the star on, for example "There is a Legendary Chest on this stage". From best to worst:
   1. Legendary Chest
   2. Large Chest, Large Damage/Healing/Utility Chest, Rusty Lockbox (only while you hold a Rusted Key)
@@ -26,8 +26,8 @@ Edit `BepInEx/config/sevenstack.SaleStarReminder.cfg`, or use the in-game settin
 | `ReminderFontSize` | 80 | Size of the main alert text. |
 | `SubheaderFontSize` | 20 | Size of the smaller line under the main alert. |
 | `ReminderOffsetY` | 8 | Gap below the item box at the top of the screen, in UI pixels. |
-| `NearChestScale` | 1.3 | How much bigger the alert gets while the game circles a Sale Star chest. 1 turns this off. |
-| `PulseNearChest` | true | Fade the alert in and out, twice per second, while the game circles a Sale Star chest. |
+| `NearChestScale` | 1.3 | How much bigger the alert gets while the game circles a Sale Star chest that's worse than a Large-or-better chest still on the stage. 1 turns this off. |
+| `PulseNearChest` | true | Fade the alert in and out, twice per second, at the same times it grows. |
 | `ShowMostValuableChest` | false | Name the most valuable unopened Sale Star chest on the stage under the reminder. |
 | `MockSmallChest` | false | Make fun of you after you spend the star on a small chest, Equipment Barrel or Concept Reliquary while a Large Chest or better was still available. |
 | `MockIncludeVulgar` | true | Also pick from the vulgar lines when making fun of you. |

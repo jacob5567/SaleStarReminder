@@ -74,12 +74,23 @@ namespace SaleStarReminder
             if (show)
             {
                 banner.ShowReminder(settings.ShowMostValuableChest.Value ? DescribeBest(scanner.Best) : null,
-                    holdsStar && IsGameCirclingChest());
+                    holdsStar && IsAboutToWasteStar());
             }
             else
             {
                 banner.Hide();
             }
+        }
+
+        // True while the game circles a chest that ranks below the best one left on the stage, and that best one is a
+        // Large chest or better: opening this one now would waste the star.
+        private bool IsAboutToWasteStar()
+        {
+            if (!IsGameCirclingChest() || !aimedChest) return false;
+            PurchaseInteraction best = scanner.Best;
+            if (!best) return false;
+            ChestTier bestTier = ChestTiers.Get(best);
+            return bestTier >= ChestTier.Large && ChestTiers.Get(aimedChest) < bestTier;
         }
 
         // The game spawns its Sale Star glow around the aimed-at chest when the player holds a star and can afford it.
@@ -99,11 +110,10 @@ namespace SaleStarReminder
             return bestSubline;
         }
 
-        // "There is a Legendary Chest on this stage", with "an" before a vowel (Adaptive Chest, Equipment Barrel).
+        // "There is a Legendary Chest on this stage", "There is an Adaptive Chest on this stage".
         private static string DescribeChestOnStage(string name)
         {
-            string article = name.Length > 0 && "AEIOUaeiou".IndexOf(name[0]) >= 0 ? "an" : "a";
-            return $"There is {article} {name} on this stage";
+            return $"There is {EnglishArticle.For(name)} {name} on this stage";
         }
 
         // Remembers the last Sale Star chest the player aimed at, which is the one a spent star went into.

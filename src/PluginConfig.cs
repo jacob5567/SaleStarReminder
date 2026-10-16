@@ -33,9 +33,9 @@ namespace SaleStarReminder
             ReminderOffsetY = config.Bind("Reminder", "ReminderOffsetY", 8f,
                 "Gap between the bottom of the item box at the top of the screen and the reminder text, in UI pixels.");
             NearChestScale = config.Bind("Reminder", "NearChestScale", 1.3f,
-                "How much bigger the main alert gets while the game circles a chest your Sale Star works on (when you look at it up close). 1 turns this off.");
+                "How much bigger the main alert gets while the game circles a chest your Sale Star works on (when you look at it up close), if that chest is worse than a Large chest or better still on the stage. 1 turns this off.");
             PulseNearChest = config.Bind("Reminder", "PulseNearChest", true,
-                "While the game circles a chest your Sale Star works on, fade the main alert in and out, twice per second. Turn this off if any pulsing or flashing bothers you.");
+                "Fade the main alert in and out, twice per second, at the same times it grows (see NearChestScale). Turn this off if any pulsing or flashing bothers you.");
 
             ShowMostValuableChest = config.Bind("MostValuableChest", "ShowMostValuableChest", false,
                 "Under the reminder, name the most valuable unopened chest on the stage that the Sale Star works on. This includes chests you haven't found yet.");
