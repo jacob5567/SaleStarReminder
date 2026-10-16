@@ -11,7 +11,6 @@ namespace SaleStarReminder
     {
         private const float FadeDuration = 0.2f;
         private const float SideMargin = 40f;
-        private const float OutlineWidth = 0.2f;
         private const float EmphasisFadeDuration = 0.15f;
         // Photosensitivity: a smooth opacity pulse at 2 Hz, under the 3 flashes per second that WCAG 2.3.1 treats as
         // the limit, and never a hard on/off flash. The alert also never fades out completely.
@@ -87,9 +86,9 @@ namespace SaleStarReminder
             text.color = color;
             text.fontStyle = style;
             text.raycastTarget = false;
-            // A dark outline keeps the text readable over bright skies and snow.
-            text.outlineWidth = OutlineWidth;
-            text.outlineColor = Color.black;
+            // No outline: the game font's material already has a drop shadow for contrast, and an outline on top of
+            // that and bold pushes each glyph past the atlas padding, so a sliver of the neighboring glyph shows as a
+            // thin line above the text.
             return text;
         }
 
