@@ -12,7 +12,7 @@ While you hold an unused Sale Star and the stage still has an unopened chest it 
   3. Adaptive Chest
   4. Small Chest, Cloaked Chest, Damage/Healing/Utility Chest
   5. Equipment Barrel, Concept Reliquary
-- **Making fun of you** (optional, off by default): spend the star on a small chest, an Equipment Barrel or a Concept Reliquary while a Large Chest, Rusty Lockbox or Legendary Chest is still unopened on the stage, and the reminder's spot makes fun of you for a few seconds. With the most-valuable-chest option on, it also names that better chest. The lines come from `MockLines.json` (see below).
+- **Making fun of you** (optional, off by default): spend the star on a small chest, an Equipment Barrel or a Concept Reliquary while a Large Chest, Rusty Lockbox or Legendary Chest is still unopened on the stage, and the reminder's spot makes fun of you for a few seconds. With the most-valuable-chest option on, it also names that better chest. The lines come from `MockLines.json` (see below). It works with the reminder turned off, so you can have only this.
 
 The mod never changes gameplay and never sends anything over the network. It works when you join a host who doesn't have it installed.
 
@@ -22,13 +22,13 @@ Edit `BepInEx/config/sevenstack.SaleStarReminder.cfg`, or use the in-game settin
 
 | Setting | Default | Description |
 |---|---|---|
-| `ShowReminder` | true | Show the red reminder. |
+| `ShowReminder` | true | Show the red reminder. Turn it off and `MockSmallChest` on to only get the mocking message. |
 | `ReminderFontSize` | 80 | Size of the main alert text. |
 | `SubheaderFontSize` | 20 | Size of the smaller line under the main alert. |
 | `ReminderOffsetY` | 8 | Gap below the item box at the top of the screen, in UI pixels. |
 | `NearChestScale` | 1.3 | How much bigger the alert gets while the game circles a Sale Star chest that's worse than a Large-or-better chest still on the stage. 1 turns this off. |
 | `PulseNearChest` | true | Fade the alert in and out, twice per second, at the same times it grows. |
-| `ShowMostValuableChest` | false | Name the most valuable unopened Sale Star chest on the stage under the reminder. |
+| `ShowMostValuableChest` | false | Name the most valuable unopened Sale Star chest on the stage under the reminder. Also lets the mocking message name the chest you could have used. |
 | `MockSmallChest` | false | Make fun of you after you spend the star on a small chest, Equipment Barrel or Concept Reliquary while a Large Chest or better was still available. |
 | `MockIncludeVulgar` | false | Also pick from the vulgar lines when making fun of you. |
 | `MockDurationSeconds` | 6 | How long the mocking message stays on screen. |

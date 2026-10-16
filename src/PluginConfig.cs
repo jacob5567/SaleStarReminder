@@ -25,7 +25,7 @@ namespace SaleStarReminder
         public PluginConfig(ConfigFile config)
         {
             ShowReminder = config.Bind("Reminder", "ShowReminder", true,
-                "Show large red text at the top of the screen while you hold an unused Sale Star and the stage has a chest it works on.");
+                "Show large red text at the top of the screen while you hold an unused Sale Star and the stage has a chest it works on. Turn this off and MockSmallChest on to only get the mocking message.");
             ReminderFontSize = config.Bind("Reminder", "ReminderFontSize", 80f,
                 "Font size of the main alert, in UI points.");
             SubheaderFontSize = config.Bind("Reminder", "SubheaderFontSize", 20f,
@@ -38,7 +38,7 @@ namespace SaleStarReminder
                 "Fade the main alert in and out, twice per second, at the same times it grows (see NearChestScale). Turn this off if any pulsing or flashing bothers you.");
 
             ShowMostValuableChest = config.Bind("MostValuableChest", "ShowMostValuableChest", false,
-                "Under the reminder, name the most valuable unopened chest on the stage that the Sale Star works on. This includes chests you haven't found yet.");
+                "Under the reminder, name the most valuable unopened chest on the stage that the Sale Star works on. This includes chests you haven't found yet. Also lets the mocking message name the chest you could have used.");
 
             MockSmallChest = config.Bind("Mock", "MockSmallChest", false,
                 "Make fun of you for a few seconds after you spend a Sale Star on a small chest, an Equipment Barrel or a Concept Reliquary while a Large Chest, Rusty Lockbox or Legendary Chest was still available. With ShowMostValuableChest on, also names that chest. The lines come from MockLines.json next to the mod's DLL.");
