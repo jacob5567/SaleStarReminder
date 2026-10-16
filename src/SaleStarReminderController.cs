@@ -57,7 +57,7 @@ namespace SaleStarReminder
             Inventory inventory = master ? master.inventory : null;
             CharacterBody body = user?.cachedBody;
 
-            scanner.Refresh(inventory);
+            scanner.Refresh(inventory, body);
             TrackAimedChest(body);
             DetectStarUse(inventory, settings);
 

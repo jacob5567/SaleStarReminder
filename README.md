@@ -36,6 +36,7 @@ Edit `BepInEx/config/sevenstack.SaleStarReminder.cfg`, or use the in-game settin
 - The Sale Star comes back at the start of every stage, so the reminder comes back too until you spend it.
 - The most-valuable-chest line counts chests you haven't found yet, which is why it's off by default.
 - The Rusty Lockbox only counts while you hold a Rusted Key yourself, even if a teammate's key made it spawn.
+- The reminder hides while you remote-operate a drone, because drones can't open the chests a Sale Star works on.
 - Chests from other mods still count as places to spend the star, but they rank below every chest listed above.
 
 ## Building

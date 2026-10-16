@@ -38,8 +38,9 @@ namespace SaleStarReminder
         {
             if (Settings.DebugLogging.Value && Settings.DumpChestsKey.Value.IsDown())
             {
-                CharacterMaster master = LocalUserManager.GetFirstLocalUser()?.cachedMaster;
-                ChestScanner.DumpAll(master ? master.inventory : null);
+                LocalUser user = LocalUserManager.GetFirstLocalUser();
+                CharacterMaster master = user?.cachedMaster;
+                ChestScanner.DumpAll(master ? master.inventory : null, user?.cachedBody);
             }
         }
 

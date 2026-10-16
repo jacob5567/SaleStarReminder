@@ -18,30 +18,32 @@ namespace SaleStarReminder
         private int scannedInstanceCount = -1;
         private int scannedCandidateCount = -1;
         private bool scannedHasKey;
+        private bool scannedRemoteOp;
         private PurchaseInteraction best;
 
         public bool AnyUsable => scannedCandidateCount > 0;
 
         public PurchaseInteraction Best => best;
 
-        // Counting candidates is a cheap pass; the best chest is only re-picked when that count, the instance count or
-        // the key changes, or the cached best stops being a candidate.
-        public void Refresh(Inventory inventory)
+        // Counting candidates is a cheap pass; the best chest is only re-picked when that count, the instance count,
+        // the key or the remote-operation state changes, or the cached best stops being a candidate.
+        public void Refresh(Inventory inventory, CharacterBody body)
         {
             bool hasKey = HasRustedKey(inventory);
+            bool remoteOp = IsRemoteOp(body);
             List<PurchaseInteraction> all = InstanceTracker.GetInstancesList<PurchaseInteraction>();
             int candidateCount = 0;
             foreach (PurchaseInteraction chest in all)
             {
-                if (IsCandidate(chest, hasKey))
+                if (IsCandidate(chest, hasKey, remoteOp))
                 {
                     candidateCount++;
                 }
             }
 
-            bool bestStillValid = candidateCount == 0 || (best && IsCandidate(best, hasKey));
+            bool bestStillValid = candidateCount == 0 || (best && IsCandidate(best, hasKey, remoteOp));
             if (all.Count == scannedInstanceCount && candidateCount == scannedCandidateCount && hasKey == scannedHasKey
-                && bestStillValid)
+                && remoteOp == scannedRemoteOp && bestStillValid)
             {
                 return;
             }
@@ -49,7 +51,8 @@ namespace SaleStarReminder
             scannedInstanceCount = all.Count;
             scannedCandidateCount = candidateCount;
             scannedHasKey = hasKey;
-            best = FindBest(all, hasKey, null);
+            scannedRemoteOp = remoteOp;
+            best = FindBest(all, hasKey, remoteOp, null);
         }
 
         // The best candidate other than exclude, e.g. the chest the star was just spent on, which may still read as
@@ -57,7 +60,8 @@ namespace SaleStarReminder
         public PurchaseInteraction GetBestExcluding(PurchaseInteraction exclude)
         {
             if (best != exclude) return best;
-            return FindBest(InstanceTracker.GetInstancesList<PurchaseInteraction>(), scannedHasKey, exclude);
+            return FindBest(InstanceTracker.GetInstancesList<PurchaseInteraction>(), scannedHasKey, scannedRemoteOp,
+                exclude);
         }
 
         // In English, the plain small chest reads as "Small Chest" rather than just "Chest", and category chests
@@ -78,29 +82,41 @@ namespace SaleStarReminder
         }
 
         // Logs every purchasable object on the stage and how the mod sees it, to check the tier table in game.
-        public static void DumpAll(Inventory inventory)
+        public static void DumpAll(Inventory inventory, CharacterBody body)
         {
             bool hasKey = HasRustedKey(inventory);
+            bool remoteOp = IsRemoteOp(body);
             List<PurchaseInteraction> all = InstanceTracker.GetInstancesList<PurchaseInteraction>();
             StringBuilder text = new StringBuilder();
-            text.AppendLine($"{all.Count} purchasable objects, Rusted Key held: {hasKey}");
+            text.AppendLine($"{all.Count} purchasable objects, Rusted Key held: {hasKey},"
+                + $" remote operation: {remoteOp}");
             foreach (PurchaseInteraction chest in all)
             {
                 if (!chest) continue;
                 text.AppendLine($"  {chest.gameObject.name}: token={chest.displayNameToken}"
                     + $" compatible={chest.saleStarCompatible} available={chest.available}"
                     + $" cost={chest.cost} costType={chest.costType} tier={ChestTiers.Get(chest)}"
-                    + $" candidate={IsCandidate(chest, hasKey)}");
+                    + $" allowRemoteOp={chest.allowRemoteOpInteraction}"
+                    + $" candidate={IsCandidate(chest, hasKey, remoteOp)}");
             }
             SaleStarReminderPlugin.Log.LogInfo(text.ToString());
         }
 
         // Deliberately not CostTypeDef.IsAffordable or PurchaseInteraction.CanBeAffordedByInteractor: for money chests
         // that would also drop the ones the player can't afford yet. Only the lockbox needs something the player holds.
-        private static bool IsCandidate(PurchaseInteraction chest, bool hasKey)
+        // A remote-operated drone can only use chests that allow it, the same rule as
+        // PurchaseInteraction.GetInteractability; no Sale Star chest in the base game does.
+        private static bool IsCandidate(PurchaseInteraction chest, bool hasKey, bool remoteOp)
         {
             return chest && chest.saleStarCompatible && chest.available
-                && (hasKey || chest.displayNameToken != ChestTiers.RustyLockboxToken);
+                && (hasKey || chest.displayNameToken != ChestTiers.RustyLockboxToken)
+                && (!remoteOp || chest.allowRemoteOpInteraction);
+        }
+
+        // Worked out from the body type when the body starts, on every machine, so it holds on clients too.
+        private static bool IsRemoteOp(CharacterBody body)
+        {
+            return body && body.isRemoteOp;
         }
 
         private static bool HasRustedKey(Inventory inventory)
@@ -108,13 +124,14 @@ namespace SaleStarReminder
             return inventory && inventory.GetItemCountEffective(RoR2Content.Items.TreasureCache) > 0;
         }
 
-        private static PurchaseInteraction FindBest(List<PurchaseInteraction> all, bool hasKey, PurchaseInteraction exclude)
+        private static PurchaseInteraction FindBest(List<PurchaseInteraction> all, bool hasKey, bool remoteOp,
+            PurchaseInteraction exclude)
         {
             PurchaseInteraction found = null;
             ChestTier foundTier = ChestTier.Unknown;
             foreach (PurchaseInteraction chest in all)
             {
-                if (chest == exclude || !IsCandidate(chest, hasKey)) continue;
+                if (chest == exclude || !IsCandidate(chest, hasKey, remoteOp)) continue;
                 ChestTier tier = ChestTiers.Get(chest);
                 if (!found || tier > foundTier
                     || (tier == foundTier && chest.costType == found.costType && chest.cost > found.cost))
