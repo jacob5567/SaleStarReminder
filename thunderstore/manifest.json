@@ -1,6 +1,6 @@
 {
   "name": "SaleStarReminder",
-  "version_number": "1.0.1",
+  "version_number": "1.1.0",
   "website_url": "https://github.com/jacob5567/SaleStarReminder",
   "description": "Shows a large red reminder while you hold an unused Sale Star, and can name the best chest on the stage to spend it on. Client-side.",
   "dependencies": [

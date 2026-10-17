@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.0
+- While the game circles a chest that's worse than one still on the stage, the alert now grows much faster and moves to the middle of the screen, where it's harder to miss. It moves back when you look away.
+
 ## 1.0.1
 - Fixed being mocked for a chest you only looked at. A star spent some other way, such as by the Captain's Hacking Beacon opening a different chest, no longer counts against the chest you last aimed at.
 - Fixed an error when a chest added by another mod has no name.
