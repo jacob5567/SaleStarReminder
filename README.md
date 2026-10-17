@@ -5,7 +5,7 @@ A client-side Risk of Rain 2 mod for the Seekers of the Storm DLC. It reminds yo
 While you hold an unused Sale Star and the stage still has an unopened chest it works on:
 
 - **UNUSED SALE STAR** appears in red at the top of the screen, just below the box your items are shown in. It goes away once you spend the star, or once no chest the star works on is left on the stage, for example in the Bazaar.
-- **About to waste it:** when the game draws its Sale Star circle around a chest you're looking at, and a better chest that's Large or higher is still unopened on the stage, the alert grows and fades in and out (twice per second, never a hard flash). Both can be turned off.
+- **About to waste it:** when the game draws its Sale Star circle around a chest you're looking at, and a better chest that's Large or higher is still unopened on the stage, the alert quickly grows, moves to the middle of the screen and fades in and out (twice per second, never a hard flash). It moves back when you look away. The growing and the fading can each be turned off.
 - **Most valuable chest** (optional, off by default): a line under the reminder names the best unopened chest on the stage to spend the star on, for example "There is a Legendary Chest on this stage". From best to worst:
   1. Legendary Chest
   2. Large Chest, Large Damage/Healing/Utility Chest, Rusty Lockbox (only while you hold a Rusted Key)

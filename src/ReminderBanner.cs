@@ -11,7 +11,7 @@ namespace SaleStarReminder
     {
         private const float FadeDuration = 0.2f;
         private const float SideMargin = 40f;
-        private const float EmphasisFadeDuration = 0.15f;
+        private const float EmphasisFadeDuration = 0.045f;
         // Photosensitivity: a smooth opacity pulse at 2 Hz, under the 3 flashes per second that WCAG 2.3.1 treats as
         // the limit, and never a hard on/off flash. The alert also never fades out completely.
         private const float PulseFrequency = 2f;
@@ -149,7 +149,14 @@ namespace SaleStarReminder
             float target = visible ? 1f : 0f;
             if (visible || canvasGroup.alpha > 0f)
             {
-                rectTransform.anchoredPosition = new Vector2(0f, GetItemDisplayBottom() - settings.ReminderOffsetY.Value);
+                float normalY = GetItemDisplayBottom() - settings.ReminderOffsetY.Value;
+                float centerY = normalY;
+                if (rectTransform.parent is RectTransform parent)
+                {
+                    centerY = -(parent.rect.height * 0.5f) + rectTransform.rect.height * 0.5f;
+                }
+                float t = Mathf.SmoothStep(0f, 1f, emphasis);
+                rectTransform.anchoredPosition = new Vector2(0f, Mathf.Lerp(normalY, centerY, t));
             }
             canvasGroup.alpha = Mathf.MoveTowards(canvasGroup.alpha, target, Time.unscaledDeltaTime / FadeDuration);
         }
