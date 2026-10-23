@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.0
+- Works with [RiskUI](https://thunderstore.io/package/Bubbet/RiskUI/). RiskUI moves the items to the bottom of the screen, which put the reminder off screen. With RiskUI installed and enabled, the reminder now sits below RiskUI's boss bar at the top of the screen and uses RiskUI's font.
+- The mocking message is now half the size of the "UNUSED SALE STAR" alert.
+
 ## 1.1.0
 - While the game circles a chest that's worse than one still on the stage, the alert now grows much faster and moves to the middle of the screen, where it's harder to miss. It moves back when you look away.
 

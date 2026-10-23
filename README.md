@@ -55,6 +55,7 @@ If the file is missing or isn't valid JSON, the mod logs a warning and doesn't m
 - The Rusty Lockbox only counts while you hold a Rusted Key yourself, even if a teammate's key made it spawn.
 - The reminder hides while you remote-operate a drone, because drones can't open the chests a Sale Star works on.
 - Chests from other mods still count as places to spend the star, but they rank below every chest listed above.
+- With [RiskUI](https://thunderstore.io/package/Bubbet/RiskUI/) installed and enabled, the reminder sits below RiskUI's boss bar at the top of the screen, since RiskUI moves the items to the bottom, and uses RiskUI's font. If you turn RiskUI on or off, the change applies from the next stage, the same as for RiskUI's own HUD.
 
 ## Building
 
