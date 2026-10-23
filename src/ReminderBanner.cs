@@ -22,7 +22,8 @@ namespace SaleStarReminder
         private static readonly Color SubheaderColor = new Color(1f, 0.92f, 0.92f);
 
         private RectTransform rectTransform;
-        private ItemInventoryDisplay itemDisplay;
+        // The banner hangs below this box's bottom edge.
+        private RectTransform topBox;
         private readonly Vector3[] corners = new Vector3[4];
         private CanvasGroup canvasGroup;
         private TextMeshProUGUI headline;
@@ -66,10 +67,21 @@ namespace SaleStarReminder
 
             ReminderBanner banner = root.AddComponent<ReminderBanner>();
             banner.rectTransform = rect;
-            banner.itemDisplay = hud.itemInventoryDisplay;
             banner.canvasGroup = group;
             banner.headline = CreateText(rect, "Headline", HeadlineColor);
             banner.subheader = CreateText(rect, "Subheader", SubheaderColor);
+            if (RiskUICompat.IsRiskUIHud(hud))
+            {
+                // RiskUI puts the items at the bottom by default, so the banner goes below its stack along the top
+                // instead. The stack reserves room for the boss bar and spectator label even while they're hidden.
+                banner.topBox = RiskUICompat.FindTopCenterCluster(hud);
+                RiskUICompat.ApplyFont(hud, banner.headline);
+                RiskUICompat.ApplyFont(hud, banner.subheader);
+            }
+            else if (hud.itemInventoryDisplay)
+            {
+                banner.topBox = (RectTransform)hud.itemInventoryDisplay.transform;
+            }
             banner.subheader.gameObject.SetActive(false);
             return banner;
         }
@@ -149,7 +161,7 @@ namespace SaleStarReminder
             float target = visible ? 1f : 0f;
             if (visible || canvasGroup.alpha > 0f)
             {
-                float normalY = GetItemDisplayBottom() - settings.ReminderOffsetY.Value;
+                float normalY = GetTopBoxBottom() - settings.ReminderOffsetY.Value;
                 float centerY = normalY;
                 if (rectTransform.parent is RectTransform parent)
                 {
@@ -181,14 +193,14 @@ namespace SaleStarReminder
             }
         }
 
-        // Bottom edge of the box along the top of the screen that the item icons shrink to fit into (the display's own
-        // rect, drawn with a translucent background), relative to the top edge of the banner's parent. The box has a
-        // fixed height, so the banner stays put however many items there are.
-        private float GetItemDisplayBottom()
+        // Bottom edge of the box along the top of the screen, relative to the top edge of the banner's parent. In the
+        // vanilla HUD that is the box the item icons shrink to fit into (the display's own rect, drawn with a
+        // translucent background). Either box has a fixed height, so the banner stays put however many items there are.
+        private float GetTopBoxBottom()
         {
-            if (!itemDisplay || !(rectTransform.parent is RectTransform parent)) return 0f;
+            if (!topBox || !(rectTransform.parent is RectTransform parent)) return 0f;
 
-            ((RectTransform)itemDisplay.transform).GetWorldCorners(corners);
+            topBox.GetWorldCorners(corners);
             return parent.InverseTransformPoint(corners[0]).y - parent.rect.yMax;
         }
     }
