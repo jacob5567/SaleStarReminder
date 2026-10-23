@@ -17,6 +17,8 @@ namespace SaleStarReminder
         private const float PulseFrequency = 2f;
         private const float PulseMinAlpha = 0.35f;
         private const string ReminderHeadline = "UNUSED SALE STAR";
+        // The mocking line is a full sentence, so it reads better smaller than the alert. Relative to ReminderFontSize.
+        private const float MockHeadlineScale = 0.5f;
 
         private static readonly Color HeadlineColor = new Color(1f, 0.17f, 0.17f);
         private static readonly Color SubheaderColor = new Color(1f, 0.92f, 0.92f);
@@ -30,6 +32,8 @@ namespace SaleStarReminder
         private TextMeshProUGUI subheader;
         private bool visible;
         private bool emphasized;
+        // Kept after Hide, so the text keeps its size while it fades out.
+        private bool mocking;
         private float emphasis;
         private float pulseTime;
         private float shownHeadlineSize = -1f;
@@ -108,12 +112,14 @@ namespace SaleStarReminder
         {
             Show(ReminderHeadline, subline);
             emphasized = nearChest;
+            mocking = false;
         }
 
         public void ShowMock(string line, string subline)
         {
             Show(line, subline);
             emphasized = false;
+            mocking = true;
         }
 
         public void Hide()
@@ -145,7 +151,8 @@ namespace SaleStarReminder
             PluginConfig settings = SaleStarReminderPlugin.Settings;
             emphasis = Mathf.MoveTowards(emphasis, emphasized ? 1f : 0f, Time.unscaledDeltaTime / EmphasisFadeDuration);
 
-            float headlineSize = settings.ReminderFontSize.Value * Mathf.Lerp(1f, settings.NearChestScale.Value, emphasis);
+            float headlineSize = settings.ReminderFontSize.Value
+                * (mocking ? MockHeadlineScale : Mathf.Lerp(1f, settings.NearChestScale.Value, emphasis));
             if (headlineSize != shownHeadlineSize)
             {
                 shownHeadlineSize = headlineSize;

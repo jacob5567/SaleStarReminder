@@ -23,7 +23,7 @@ Edit `BepInEx/config/sevenstack.SaleStarReminder.cfg`, or use the in-game settin
 | Setting | Default | Description |
 |---|---|---|
 | `ShowReminder` | true | Show the red reminder. Turn it off and `MockSmallChest` on to only get the mocking message. |
-| `ReminderFontSize` | 80 | Size of the main alert text. |
+| `ReminderFontSize` | 80 | Size of the main alert text. The mocking message is half this size. |
 | `SubheaderFontSize` | 20 | Size of the smaller line under the main alert. |
 | `ReminderOffsetY` | 8 | Gap below the item box at the top of the screen, in UI pixels. |
 | `NearChestScale` | 1.3 | How much bigger the alert gets while the game circles a Sale Star chest that's worse than a Large-or-better chest still on the stage. 1 turns this off. |
